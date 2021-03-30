@@ -5,11 +5,14 @@ const prefix = config.prefix;
 bot.commands = new Discord.Collection();
 const fs = require('fs');
 const token = config.token;
+const aws = require('aws-sdk');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 let listOfInsults = ["shut up you useless subhuman filth", "everytime you say somebody leveled up i become one step closer to a hate crime that includes you",
 "i'm going to level with you, nobody cares", "i'm going to level your ass to kingdom come if you dont shut the hell up", "shut shut shut shut shut shut shut",
 "stop it stop it stop it among us among us among us st", "i hope you step on legos", "die so you can finally provide something useful to society"]
-bot.login(token);
+if(token == null){
+    bot.login(process.env.token);
+}
 console.log(bot.user);
 
 for(const file of commandFiles){
