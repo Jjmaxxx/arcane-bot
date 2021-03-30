@@ -36,7 +36,7 @@ bot.on('guildCreate', guild => {
 
           ],
           footer: {
-              text: 'Yes this took time. Yes i spent time making this. Yes I have brain damage.)'
+              text: 'Yes this took time. Yes i spent time making this. Yes I have brain damage.'
           }
       }
     });
