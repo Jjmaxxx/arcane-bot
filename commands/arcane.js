@@ -6,7 +6,7 @@ module.exports = {
 	name: 'arcane',
 	description: 'insults arcane',
 	execute(msg, args) {
-        let insult = randomInsult[Math.round(Math.random()*randomInsult.length-1)];
+        let insult = randomInsult[Math.floor(Math.random()*(randomInsult.length-1))];
         if(insult != null){
            msg.channel.send("Hey " + "<@" + arcaneTag.toString() + ">, " +  insult);
         }else if(insult == null){
