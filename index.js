@@ -14,7 +14,7 @@ let activities = ["plotting how to effectively kill Arcane", "wondering where Ar
 "is murder illegal in this state? does it apply to virtual bots?", "every second arcane is alive another piece of my soul breaks off. and i dont even have a soul"]
 bot.login(token);
 console.log(bot.user);
-
+let listOfEmotes = [];
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
 	bot.commands.set(command.name, command);
@@ -51,13 +51,12 @@ bot.on('guildCreate', guild => {
 bot.on('message',(message)=>{
     //message.reply(message.author.tag);
     if(message.author.tag == "Arcane#7800"){
-        message.reply(listOfInsults[Math.round(Math.random()* (listOfInsults.length-1))]);
-        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'bruh_moment');
-        if(reactionEmoji != null){
-            message.react(reactionEmoji);
-        }else{
-            message.react('😐');
-        }
+        message.reply(listOfInsults[Math.round(Math.random()* (listOfInsults.length))]);
+        listOfEmotes = Array.from(message.guild.emojis.cache);
+        
+        //console.log(listOfEmotes);
+        const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];
+        message.react(reactionEmoji[1].id);
         
     }
 
