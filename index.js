@@ -52,6 +52,13 @@ bot.on('message',(message)=>{
     //message.reply(message.author.tag);
     if(message.author.tag == "Arcane#7800"){
         message.reply(listOfInsults[Math.round(Math.random()* (listOfInsults.length-1))]);
+        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === ':|');
+        if(reactionEmoji != null){
+            message.react(reactionEmoji);
+        }else{
+            message.react('😐');
+        }
+        
     }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
