@@ -52,7 +52,7 @@ bot.on('message',(message)=>{
     //message.reply(message.author.tag);
     if(message.author.tag == "Arcane#7800"){
         message.reply(listOfInsults[Math.round(Math.random()* (listOfInsults.length-1))]);
-        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === ':|');
+        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'bruh_moment');
         if(reactionEmoji != null){
             message.react(reactionEmoji);
         }else{
