@@ -18,5 +18,5 @@ module.exports = {
 	},
 };
 
-//git add -u
-//git reset -- .env   
+//git rm -rf --cached .
+//git add .
