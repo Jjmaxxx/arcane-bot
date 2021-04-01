@@ -16,13 +16,6 @@ module.exports = {
             { name: "$" +  commands[1].name, value: commands[1].desc }
         ).setFooter("What do you want from me I started using this coding library like 4 hours ago shut up");
         msg.channel.send(commandsList);
-        // console.log(index.listOfCommands.name);
-        // for(let i=0; i<index.listOfCommands.length; i++){
-        //     msg.reply(index.listOfCommands[i].name);
-        // }
-        
-        // if(!msg.author.bot){
-        //     msg.reply((`${msg.author.tag} in #${msg.channel.name} sent: ${msg.content}`));
-        // }
+
 	},
 }

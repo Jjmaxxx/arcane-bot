@@ -72,5 +72,5 @@ bot.on('message',(message)=>{
 })
 
 exports.listOfCommands = listOfCommands;
-//git rm -r --cached .
+//git rm -rf --cached .
 //git add .
