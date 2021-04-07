@@ -74,8 +74,13 @@ bot.on('guildCreate', guild => {
   }
   //
 bot.on('message',(message)=>{
+    let target;
+    db.collection("LinkServerToCollection").find({ServerID: message.guild.id}, (err, collection)=>{
+        if(err) throw err;
+        target=collection.target;
+    })
     //message.reply(message.author.tag);
-    if(message.author.tag == "Arcane#7800"){
+    if(message.author.id == target){
         db.collection('insults').aggregate([{$sample: {size: 1}}]).toArray().then((data)=>{sendInsult = data[0].insult})
         interval = setInterval(()=>{waitForInsult(message)},250);
 
@@ -99,7 +104,9 @@ bot.on('message',(message)=>{
     }
 })
 
+module.exports.listOfCommands = listOfCommands;
 
-exports.listOfCommands = listOfCommands;
+
 //git rm -rf --cached .
 //git add .
+//git reset --hard HEAD^
