@@ -54,7 +54,7 @@ bot.on('guildCreate', guild => {
           fields:[
               {
                   name: 'Commands',
-                  value: 'help, arcane'
+                  value: 'help, arcane,createList, addInsult'
               },
 
           ],
@@ -80,6 +80,9 @@ bot.on('message',(message)=>{
         target=collection.target;
     })
     //message.reply(message.author.tag);
+    if(target == null){
+        target = "437808476106784770";
+    }
     if(message.author.id == target){
         db.collection('insults').aggregate([{$sample: {size: 1}}]).toArray().then((data)=>{sendInsult = data[0].insult})
         interval = setInterval(()=>{waitForInsult(message)},250);
