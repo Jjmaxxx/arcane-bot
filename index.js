@@ -5,7 +5,6 @@ const prefix = config.prefix;
 bot.commands = new Discord.Collection();
 const fs = require('fs');
 const token = config.token;
-const aws = require('aws-sdk');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 let activities = ["plotting how to effectively kill Arcane", "wondering where Arcane lives", "how do i kill a virtual bot?", "getting my alt f4 out in case i see arcane",
@@ -23,6 +22,7 @@ const mongo = require("mongodb");
 let mongoClient = mongo.MongoClient;
 let url = "mongodb://localhost:27017/arcane-bot";
 let db;
+
 mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
     db = client.db("arcane-bot");
     //console.log(db0);
@@ -54,7 +54,7 @@ bot.on('guildCreate', guild => {
           fields:[
               {
                   name: 'Commands',
-                  value: 'help, arcane,createList, addInsult'
+                  value: 'help, arcane, createList, addInsult'
               },
 
           ],

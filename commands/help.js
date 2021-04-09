@@ -6,16 +6,13 @@ module.exports = {
 	description: 'shows commands',
 	execute(msg, args) {
         index.listOfCommands.map((currElement, index)=>{
-            commands.push({name:index, desc: currElement.description});
+            commands.push({name:"$" + index, value: currElement.description});    
         })
         let commandsList = new Discord.MessageEmbed()
         .setTitle("Here's my List of Commands")
         .setColor('0x2471a3')
         .addFields(
-            { name: "$" + commands[0].name, value: commands[0].desc },
-            { name: "$" +  commands[1].name, value: commands[1].desc },
-            { name: "$" +  commands[2].name, value: commands[2].desc },
-            { name: "$" +  commands[3].name, value: commands[3].desc }
+            commands
         ).setFooter("What do you want from me I started using this coding library like 4 hours ago shut up");
         msg.channel.send(commandsList);
 

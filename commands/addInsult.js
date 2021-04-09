@@ -13,7 +13,6 @@ module.exports = {
 	name: 'addinsult',
 	description: 'adds insult to your collection',
 	execute(msg, args) {
-        let serverCollection;
         db.collection("LinkServerToCollection").findOne({ServerID:msg.guild.id},(err, document)=>{
             if(err) throw err;
             db.collection(`${document.collectionName}`).insertOne({insult: `${args}`});

@@ -35,7 +35,7 @@ module.exports = {
                         }else{
                             msg.react("✅");
                             msg.channel.send(`***${args}*** has been created`);
-                            db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collectionName: `${args}`, target:"437808476106784770".toString()})
+                            db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collectionName: `${args}`, currentCollection: "insults", target:"437808476106784770".toString()});
                             db.createCollection(`${args}`, (err,res)=>{
                                 if(err){
                                     throw err;
