@@ -64,14 +64,6 @@ bot.on('guildCreate', guild => {
       }
     });
   });
-  let interval;
-  let sendInsult;
-  function waitForInsult(message){
-      if(sendInsult != null){
-          message.reply(sendInsult);
-          clearInterval(interval);
-      }
-  }
   //
 bot.on('message',(message)=>{
     let target;
@@ -84,9 +76,11 @@ bot.on('message',(message)=>{
         target = "437808476106784770";
     }
     if(message.author.id == target){
-        db.collection('insults').aggregate([{$sample: {size: 1}}]).toArray().then((data)=>{sendInsult = data[0].insult})
-        interval = setInterval(()=>{waitForInsult(message)},250);
-
+        db.collection('insults').findOne({collectionName: "insults"}, (err, document)=>{
+            if(err) throw err;
+            let insult = document.insults;
+            message.reply(insult[Math.floor(Math.random()*insult.length)]);
+        })
         listOfEmotes = Array.from(message.guild.emojis.cache);
         //console.log(listOfEmotes);
         const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];

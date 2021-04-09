@@ -13,11 +13,19 @@ module.exports = {
 	name: 'addinsult',
 	description: 'adds insult to your collection',
 	execute(msg, args) {
-        db.collection("LinkServerToCollection").findOne({ServerID:msg.guild.id},(err, document)=>{
-            if(err) throw err;
-            db.collection(`${document.collectionName}`).insertOne({insult: `${args}`});
-            msg.channel.send("insult added");
+        console.log(args);
+        let phrase = "";
+        for(let i=0; i<args.length;i++){
+            phrase+= `${args[i]} `;
+        }
+        phrase.trim();
+        db.collection("LinkServerToCollection").findOne({'ServerID': `${msg.guild.id}`},(err,collection)=>{
+            if(collection.currentCollection == "insults"){
+                msg.channel.send("you can't add insults to the default collection stop. make a new collection");
+            }else{
+                db.collection("insults").updateOne({$and: [{'collectionName': `${collection.currentCollection}`},{'ServerID': `${msg.guild.id}`}]},{$push: {"insults": `${phrase}`}});
+                msg.channel.send("insult added");
+            }
         })
-
     },
 }

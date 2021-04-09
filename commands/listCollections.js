@@ -11,14 +11,14 @@ mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
     }
 })
 module.exports = {
-	name: 'list',
+	name: 'listcollections',
 	description: 'list available collections',
 	execute(msg, args) {
         let collections = [];
-        db.collection("LinkServerToCollection").findOne({ServerID:msg.guild.id},(err, document)=>{
+        db.collection("insults").findOne({ServerID:msg.guild.id},(err, document)=>{
             if(err) throw err;
             collections.push({name: "insults", value: "default insults list"});
-            if(document != null){
+            if(document != null && collections.length == 1){
                 collections.push({name:document.collectionName, value: "custom server description here (i'll implement this later)"});
             }
             let collectionsList = new Discord.MessageEmbed()
