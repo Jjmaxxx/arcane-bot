@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const utils = require("../utils.js");
 const mongoUtil = require("../mongoUtil.js");
 mongoUtil.connectToServer();
