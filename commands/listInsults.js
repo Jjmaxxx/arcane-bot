@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
 const mongoUtil = require("../mongoUtil.js")
+const utils = require("../utils.js");
 mongoUtil.connectToServer();
 module.exports = {
 	name: 'listinsults',
@@ -9,18 +9,17 @@ module.exports = {
         db.collection('LinkServerToCollection').findOne({ServerID: `${msg.guild.id}`},(err, document)=>{
             if(err) throw err;
             let insultList = [];
-            console.log(document.currentCollection);
-            if(document.currentCollection == "insults"){
-                db.collection('insults').findOne({collectionName: "insults"}, (err, doc)=>{
+            if(document.currentCollection == "default"){
+                db.collection('insults').findOne({collectionName: "default"}, (err, doc)=>{
                     if(err) throw err;
-                    insultList = createNewList(doc, insultList);
-                    embedMessage(document.currentCollection,insultList, msg);
+                    insultList = utils.createNewList(doc, insultList);
+                    utils.embedMessage(`Here's ${doc.collectionName}\'s list of insults`,insultList, msg);
                 })
             }else{
                 db.collection(`insults`).findOne({$and: [{collectionName: `${document.currentCollection}`},{ServerID: `${msg.guild.id}`}]},(err, doc)=>{
                     if(err) throw err;
-                    insultList = createNewList(doc, insultList);
-                    embedMessage(document.currentCollection,insultList, msg);
+                    insultList = utils.createNewList(doc, insultList);
+                    utils.embedMessage(`Here's ${doc.collectionName}\'s list of insults`,insultList, msg);
                 })
             }
 
@@ -28,21 +27,4 @@ module.exports = {
             //console.log(result);
         })
     },
-}
-
-//make a utils.js
-function createNewList(doc,insultList){
-    for(let i=0; i<doc.insults.length;i++){
-        insultList.push({name:doc.insults[i], value: 'idk how to get rid of these lines i will figure it out later im tired nightmarenightmarenightmare'});
-    }
-    return insultList;
-}
-function embedMessage(collection, insults, msg){
-    let collectionsList = new Discord.MessageEmbed()
-    .setTitle(`Here's ${collection}\'s list of insults`)
-    .setColor('0x2471a3')
-    .addFields(
-        insults
-    );
-    msg.channel.send(collectionsList);
 }

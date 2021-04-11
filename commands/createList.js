@@ -18,10 +18,13 @@ module.exports = {
                 }else if(args[0].toString().length < 2){
                     msg.react("❌");
                     msg.channel.send("make your name longer, like at least 3 letters. gotta make it look good y'know?");
+                }else if(args[0] == "default"){
+                    msg.react("❌");
+                    msg.channel.send("ok but don't name it default");
                 }else{
                     msg.react("✅");
                     msg.channel.send(`***${args}*** has been created`);
-                    db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collections: [`${args}`], currentCollection: "insults", target:"437808476106784770"});
+                    db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collections: [`${args}`], currentCollection: `${args}`, target:"437808476106784770"});
                     db.collection("insults").insertOne({ServerID: msg.guild.id, collectionName: `${args}`, insults: []});
                     console.log("document created");
                 }

@@ -1,11 +1,11 @@
-const mongoUtil = require("../mongoUtil.js")
+const mongoUtil = require("../mongoUtil.js");
 mongoUtil.connectToServer();
 module.exports = {
 	name: 'switch',
 	description: 'switch from current collection',
 	execute(msg, args) {
         let db = mongoUtil.getDb();
-        if(args == "insults"){
+        if(args == "default"){
             db.collection("LinkServerToCollection").updateOne({ServerID:msg.guild.id}, {$set: {"currentCollection": `${args[0]}`}});
             msg.channel.send(`***${args}*** has now been selected`);
         }else{

@@ -20,7 +20,7 @@ module.exports = {
         }
         phrase.trim();
         db.collection("LinkServerToCollection").findOne({'ServerID': `${msg.guild.id}`},(err,collection)=>{
-            if(collection.currentCollection == "insults"){
+            if(collection.currentCollection == "default"){
                 msg.channel.send("you can't add insults to the default collection stop. make a new collection");
             }else{
                 db.collection("insults").updateOne({$and: [{'collectionName': `${collection.currentCollection}`},{'ServerID': `${msg.guild.id}`}]},{$push: {"insults": `${phrase}`}});

@@ -56,25 +56,26 @@ bot.on('guildCreate', guild => {
   //
 bot.on('message',(message)=>{
     let db = mongoUtil.getDb();
-    //TODO: move inside of 85 if statement
     db.collection("LinkServerToCollection").findOne({ServerID: message.guild.id}, (err, collection)=>{
         if(err){
             console.log('REEE DB ERROR')
             throw err;
         } 
-        //target = "437808476106784770";
-        if(message.author.id == collection.target){
-            console.log('run');
-            db.collection('insults').findOne({collectionName: `${collection.currentCollection}`}, (err, document)=>{
-                if(err) throw err;
-                let insult = document.insults;
-                message.reply(insult[Math.floor(Math.random()*insult.length)]);
-            })
-            listOfEmotes = Array.from(message.guild.emojis.cache);
-            //console.log(listOfEmotes);
-            const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];
-            message.react(reactionEmoji[1].id);
-        }
+        //"437808476106784770";
+        if(collection){
+            if(message.author.id == collection.target){
+                console.log('run');
+                db.collection('insults').findOne({collectionName: `${collection.currentCollection}`}, (err, document)=>{
+                    if(err) throw err;
+                    let insult = document.insults;
+                    message.reply(insult[Math.floor(Math.random()*insult.length)]);
+                })
+                listOfEmotes = Array.from(message.guild.emojis.cache);
+                //console.log(listOfEmotes);
+                const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];
+                message.react(reactionEmoji[1].id);
+            }
+    }
     })
     //message.reply(message.author.tag);
 
