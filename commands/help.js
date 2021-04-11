@@ -1,13 +1,10 @@
 let index = require('../index');
-let commands = [];
 const Discord = require("discord.js");
 module.exports = {
     name: 'help',
 	description: 'shows commands',
 	execute(msg, args) {
-        index.listOfCommands.map((currElement, index)=>{
-            commands.push({name:"$" + index, value: currElement.description});    
-        })
+        let commands = index.commandList;
         let commandsList = new Discord.MessageEmbed()
         .setTitle("Here's my List of Commands")
         .setColor('0x2471a3')

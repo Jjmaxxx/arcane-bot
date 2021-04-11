@@ -1,19 +1,10 @@
-const mongo = require("mongodb");
-const Discord = require("discord.js");
-let mongoClient = mongo.MongoClient;
-let url = "mongodb://localhost:27017/arcane-bot";
-let db;
-let index = require('../index');
-mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
-    db = client.db("arcane-bot");
-    if(err){
-        throw err;
-    }
-})
+const mongoUtil = require("../mongoUtil.js")
+mongoUtil.connectToServer();
 module.exports = {
 	name: 'switch',
 	description: 'switch from current collection',
 	execute(msg, args) {
+        let db = mongoUtil.getDb();
         if(args == "insults"){
             db.collection("LinkServerToCollection").updateOne({ServerID:msg.guild.id}, {$set: {"currentCollection": `${args[0]}`}});
             msg.channel.send(`***${args}*** has now been selected`);

@@ -1,19 +1,11 @@
-const mongo = require("mongodb");
 const Discord = require("discord.js");
-let mongoClient = mongo.MongoClient;
-let url = "mongodb://localhost:27017/arcane-bot";
-let db;
-let index = require('../index');
-mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
-    db = client.db("arcane-bot");
-    if(err){
-        throw err;
-    }
-})
+const mongoUtil = require("../mongoUtil.js")
+mongoUtil.connectToServer();
 module.exports = {
 	name: 'listinsults',
 	description: 'list insults in collection',
 	execute(msg, args) {
+        let db = mongoUtil.getDb();
         db.collection('LinkServerToCollection').findOne({ServerID: `${msg.guild.id}`},(err, document)=>{
             if(err) throw err;
             let insultList = [];
@@ -37,6 +29,8 @@ module.exports = {
         })
     },
 }
+
+//make a utils.js
 function createNewList(doc,insultList){
     for(let i=0; i<doc.insults.length;i++){
         insultList.push({name:doc.insults[i], value: 'idk how to get rid of these lines i will figure it out later im tired nightmarenightmarenightmare'});

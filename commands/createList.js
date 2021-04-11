@@ -1,18 +1,11 @@
-const mongo = require("mongodb");
-let mongoClient = mongo.MongoClient;
-let url = "mongodb://localhost:27017/arcane-bot";
-let db;
-let index = require('../index');
-mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
-    db = client.db("arcane-bot");
-    if(err){
-        throw err;
-    }
-})
+const mongoUtil = require("../mongoUtil.js")
+mongoUtil.connectToServer();
+
 module.exports = {
 	name: 'createlist',
 	description: 'creates an empty list of insults for your server',
 	execute(msg, args) {
+        let db = mongoUtil.getDb();
         db.collection("insults").findOne({ServerID: msg.guild.id}, (err, document)=>{
             if(err) throw err;
             if(document){

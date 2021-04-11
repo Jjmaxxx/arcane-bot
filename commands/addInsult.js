@@ -1,18 +1,18 @@
-const mongo = require("mongodb");
-let mongoClient = mongo.MongoClient;
-let url = "mongodb://localhost:27017/arcane-bot";
-let db;
-let index = require('../index');
-mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
-    db = client.db("arcane-bot");
-    if(err){
-        throw err;
-    }
-})
+const mongoUtil = require("../mongoUtil.js");
+mongoUtil.connectToServer();
+
+// mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
+//     db = client.db("arcane-bot");
+//     if(err){
+//         throw err;
+//     }
+// })
+
 module.exports = {
 	name: 'addinsult',
 	description: 'adds insult to your collection',
 	execute(msg, args) {
+        let db = mongoUtil.getDb();
         console.log(args);
         let phrase = "";
         for(let i=0; i<args.length;i++){
