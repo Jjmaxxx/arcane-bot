@@ -63,11 +63,11 @@ bot.on('message',(message)=>{
     dbInsults = mapDatabase.dbInsults;
     let document = dbMap.get(message.guild.id);
     let insultDoc = dbInsults.get(message.guild.id);
-    if(document.target == message.author.id){
+    if(document != null && document.target == message.author.id){
         if(document.currentCollection == "default"){
             message.reply(dbInsults.get("global").insults[Math.floor(Math.random()*insultDoc.insults.length)]);
         }
-        else if(document.currentCollection == insultDoc.collectionName){
+        else if(document.currentCollection == insultDoc.collectionName && insultDoc.ServerID == document.ServerID){
             message.reply(insultDoc.insults[Math.floor(Math.random()*insultDoc.insults.length)]);
         }
         listOfEmotes = Array.from(message.guild.emojis.cache);
