@@ -1,14 +1,16 @@
 const mongoUtil = require("../mongoUtil.js")
 mongoUtil.connectToServer();
-
+const mapDatabase = require("../mapDatabase.js");
 module.exports = {
 	name: 'current',
 	description: 'displays collection selected',
 	execute(msg, args) {
-        let db = mongoUtil.getDb();
-        db.collection("LinkServerToCollection").findOne({ServerID:msg.guild.id},(err, document)=>{
-            if(err) throw err;
-            msg.channel.send("current collection selected is ***" + document.currentCollection+"***");
-        })
+        let getDoc = mapDatabase.dbMap.get(msg.guild.id);
+        if(!getDoc){
+            msg.channel.send("current collection selected is ***default***")
+        }else if(getDoc){
+            console.log(getDoc);
+            msg.channel.send("current collection selected is ***" + getDoc.currentCollection+"***");
+        }
     },
 }
