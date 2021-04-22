@@ -1,16 +1,8 @@
 const mongoUtil = require("../mongoUtil.js");
 mongoUtil.connectToServer();
 const mapDatabase = require("../mapDatabase.js");
-
-// mongoClient.connect(url,{useUnifiedTopology:true},(err,client)=>{
-//     db = client.db("arcane-bot");
-//     if(err){
-//         throw err;
-//     }
-// })
-
 module.exports = {
-	name: 'addinsult',
+	name: 'add',
 	description: 'adds insult to your collection',
 	execute(msg, args) {
         let db = mongoUtil.getDb();

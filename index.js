@@ -9,9 +9,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const mapDatabase = require("./mapDatabase.js");
 const mongoUtil = require("./mongoUtil.js")
 mongoUtil.connectToServer();
-let db;
-let dbMap; 
-let dbInsults;
+let db, dbMap, dbInsults; 
 let activities = ["plotting how to effectively kill Arcane", "wondering where Arcane lives", "how do i kill a virtual bot?", "getting my alt f4 out in case i see arcane",
 "is murder illegal in this state? does it apply to virtual bots?", "every second arcane is alive another piece of my soul breaks off. and i dont even have a soul"]
 bot.login(token);
@@ -31,8 +29,9 @@ listOfCommands.map((currElement, index)=>{
 bot.on('ready',()=>{
     console.log("bot ready");
     db = mongoUtil.getDb();
-    mapDatabase.mapLinkServerToCollection(db);
-    mapDatabase.mapInsults(db);
+    mapDatabase.default(db);
+    // mapDatabase.mapLinkServerToCollection(db);
+    // mapDatabase.mapInsults(db);
     bot.user.setAvatar('./arcanepic.jpg');
     bot.user.setActivity(activities[4]);
     setInterval(() => {
@@ -57,34 +56,40 @@ bot.on('guildCreate', guild => {
     });
   });
   //
-bot.on('message',(message)=>{
-    //console.log(mapDatabase.dbMap);
+
+bot.on('message',(msg)=>{
+    if(!mapDatabase.inCollection(msg)){
+        mapDatabase.addServerToCollection(db, msg);
+        mapDatabase.addInsultToCollection(db, msg);
+    }else if(mapDatabase.inCollection(msg)){
+        mapDatabase.refreshTimeout(msg);
+    }
     dbMap = mapDatabase.dbMap;
     dbInsults = mapDatabase.dbInsults;
-    let document = dbMap.get(message.guild.id);
-    let insultDoc = dbInsults.get(message.guild.id);
-    if(document != null && document.target == message.author.id){
+    let document = dbMap.get(msg.guild.id);
+    let insultDoc = dbInsults.get(msg.guild.id);
+    if(document != null && document.target == msg.author.id){
         if(document.currentCollection == "default"){
-            message.reply(dbInsults.get("global").insults[Math.floor(Math.random()*insultDoc.insults.length)]);
+            msg.reply(dbInsults.get("global").insults[Math.floor(Math.random()*insultDoc.insults.length)]);
         }
         else if(document.currentCollection == insultDoc.collectionName && insultDoc.ServerID == document.ServerID){
-            message.reply(insultDoc.insults[Math.floor(Math.random()*insultDoc.insults.length)]);
+            msg.reply(insultDoc.insults[Math.floor(Math.random()*insultDoc.insults.length)]);
         }
-        listOfEmotes = Array.from(message.guild.emojis.cache);
+        listOfEmotes = Array.from(msg.guild.emojis.cache);
         const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];
-        message.react(reactionEmoji[1].id);
+        msg.react(reactionEmoji[1].id);
     }
 
-    if (!message.content.startsWith(prefix) || message.author.bot){
+    if (!msg.content.startsWith(prefix) || msg.author.bot){
         return;
     } 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
     if(!bot.commands.has(command)){
-        message.reply("command not recognized");
+        msg.reply("command not recognized");
     }else{
-        bot.commands.get(command).execute(message, args);
+        bot.commands.get(command).execute(msg, args);
     }
 })
 
