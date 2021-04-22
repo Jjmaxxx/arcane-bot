@@ -11,13 +11,16 @@ module.exports = {
             for(let i=0; i<data.length;i++){
                 dbMap.set(data[i].ServerID,{ServerID: data[i].ServerID, collections: data[i].collections, currentCollection: data[i].currentCollection, target: data[i].target})
             }
-            //console.log(dbMap);
         })
     },
     default: (db)=>{
         db.collection("insults").findOne({ServerID:"global"},(err, document)=>{
             if(err) throw err;
             dbInsults.set(document.ServerID,{ServerID: document.ServerID, collectionName: document.collectionName, insults: document.insults});
+            const run = async ()=>{
+                defaultList = await utils.createNewList(dbInsults.get("global"), defaultList);
+            }
+            run(); 
         })
     },
     mapInsults: (db)=>{
@@ -26,14 +29,7 @@ module.exports = {
                 dbInsults.set(data[i].ServerID,{ServerID: data[i].ServerID, collectionName: data[i].collectionName, insults: data[i].insults});
             }
         })
-        // const run = async ()=>{
-        //     insultList = await utils.createNewList(getInsults, insultList);
-        //     utils.embedMessage(`Here's ${getInsults.collectionName}\'s list of insults`,insultList, msg);
-        // }
-        // run(); 
-        // defaultList = utils.createNewList(dbInsults.get("global"), []);
-        // console.log(defaultList);
-        // //console.log(dbInsults);
+
     },
     addServerToCollection: (db, msg)=>{
         db.collection("LinkServerToCollection").findOne({ServerID: msg.guild.id}, (err, document)=>{

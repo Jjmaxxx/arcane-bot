@@ -85,10 +85,13 @@ bot.on('message',(msg)=>{
     } 
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-
     if(!bot.commands.has(command)){
-        msg.reply("command not recognized");
-    }else{
+        
+    }
+    else if(mapDatabase.dbMap.get(msg.guild.id) == null || mapDatabase.dbInsults.get(msg.guild.id) == null){
+
+    }
+    else{
         bot.commands.get(command).execute(msg, args);
     }
 })

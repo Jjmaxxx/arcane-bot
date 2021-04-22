@@ -3,7 +3,7 @@ mongoUtil.connectToServer();
 const mapDatabase = require("../mapDatabase.js");
 module.exports = {
 	name: 'switch',
-	description: 'switch from current collection',
+	description: 'switch from current collection; ex: $switch (collection name goes here)',
 	execute(msg, args) {
         let db = mongoUtil.getDb();
         let getDoc = mapDatabase.dbMap.get(msg.guild.id);

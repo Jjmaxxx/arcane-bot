@@ -10,7 +10,7 @@ module.exports = {
         .setColor('0x2471a3')
         .addFields(
             commands
-        ).setFooter("What do you want from me I started using this coding library like 4 hours ago shut up");
+        ).setFooter("each server can only have one collection currently because i just wanted to get one per server working first it's confusing with multiple collections i'll add it later");
         msg.channel.send(commandsList);
 
 	},

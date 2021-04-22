@@ -6,7 +6,7 @@ const utils = require("../utils.js");
 const Discord = require("discord.js");
 module.exports = {
 	name: 'delete',
-	description: 'deletes an insult from your collection',
+	description: 'deletes an insult from current collection; ex: $delete (number)',
 	execute(msg, args) {
         let db = mongoUtil.getDb();
         let getDoc = mapDatabase.dbMap.get(msg.guild.id);

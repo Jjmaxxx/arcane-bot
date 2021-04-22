@@ -3,7 +3,7 @@ mongoUtil.connectToServer();
 const mapDatabase = require("../mapDatabase.js");
 module.exports = {
 	name: 'createlist',
-	description: 'creates an empty list of insults for your server',
+	description: 'creates an empty list of insults for your server; ex: $createlist (name goes here)',
 	execute(msg, args) {
         let db = mongoUtil.getDb();
         if(mapDatabase.dbMap.get(msg.guild.id)){

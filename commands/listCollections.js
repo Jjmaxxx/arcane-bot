@@ -4,7 +4,7 @@ mongoUtil.connectToServer();
 const mapDatabase = require("../mapDatabase.js");
 module.exports = {
 	name: 'listcollections',
-	description: 'list available collections',
+	description: 'lists available collections; ex: $listcollections',
 	execute(msg, args) {
         let collections = [];
         let getInsults = mapDatabase.dbInsults.get(msg.guild.id);
