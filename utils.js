@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 module.exports = {
-     createNewList: async (doc,insultList)=>{
+    createNewList: async (doc,insultList)=>{
         for(let i=0; i<doc.insults.length;i++){
             insultList.push({name:`${i}. ${doc.insults[i]}`, value: "** **", inline: true});
         }
@@ -16,4 +16,4 @@ module.exports = {
         msg.channel.send(collectionsList);
         return collectionsList;
     }
-    }
+}

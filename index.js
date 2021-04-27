@@ -22,7 +22,12 @@ for(const file of commandFiles){
 const listOfCommands = bot.commands;
 let commandList = [];
 listOfCommands.map((currElement, index)=>{
-    commandList.push({name:"$" + index, value: currElement.description});    
+    if(index == "target"){
+
+    }
+    else{
+        commandList.push({name:prefix + index, value: currElement.description});    
+    }
 })
 
 
@@ -56,19 +61,38 @@ bot.on('guildCreate', guild => {
     });
   });
   //
-
 bot.on('message',(msg)=>{
-    if(!mapDatabase.inCollection(msg)){
-        mapDatabase.addServerToCollection(db, msg);
-        mapDatabase.addInsultToCollection(db, msg);
-    }else if(mapDatabase.inCollection(msg)){
-        mapDatabase.refreshTimeout(msg);
+    // if (msg.author.bot){
+    //     return;
+    // } 
+    const args = msg.content.slice(prefix.length).trim().split(/ +/);
+	const command = args.shift().toLowerCase();
+    if(bot.commands.has(command)){
+        if(msg.channel.type !== "dm"){
+            if(!mapDatabase.inCollection(msg)){
+                mapDatabase.addServerToCollection(db, msg);
+                mapDatabase.addInsultToCollection(db, msg);
+            }else if(mapDatabase.inCollection(msg)){
+                mapDatabase.refreshTimeout(msg);
+            }
+        }
+        if(msg.content.startsWith(prefix)){
+            bot.commands.get(command).execute(msg, args);
+        }
+    }
+    if(msg.channel.type !== "dm"){
+        if(mapDatabase.dbMap.get(msg.guild.id) == null || mapDatabase.dbInsults.get(msg.guild.id) == null){
+
+        }
     }
     dbMap = mapDatabase.dbMap;
     dbInsults = mapDatabase.dbInsults;
+    if(msg.channel.type === "dm"){
+        return;
+    }
     let document = dbMap.get(msg.guild.id);
     let insultDoc = dbInsults.get(msg.guild.id);
-    if(document != null && document.target == msg.author.id){
+    if(document != null && document.target == `${msg.member.user.tag}`){
         if(document.currentCollection == "default"){
             msg.reply(dbInsults.get("global").insults[Math.floor(Math.random()*insultDoc.insults.length)]);
         }
@@ -79,26 +103,13 @@ bot.on('message',(msg)=>{
         const reactionEmoji = listOfEmotes[Math.floor(Math.random() * listOfEmotes.length)];
         msg.react(reactionEmoji[1].id);
     }
-
-    if (!msg.content.startsWith(prefix) || msg.author.bot){
-        return;
-    } 
-    const args = msg.content.slice(prefix.length).trim().split(/ +/);
-	const command = args.shift().toLowerCase();
-    if(!bot.commands.has(command)){
-        
-    }
-    else if(mapDatabase.dbMap.get(msg.guild.id) == null || mapDatabase.dbInsults.get(msg.guild.id) == null){
-
-    }
-    else{
-        bot.commands.get(command).execute(msg, args);
-    }
+    // if(!msg.content.startsWith(prefix)){
+    //     return;
+    // }
 })
 
 module.exports.commandList = commandList;
-
-
+module.exports.bot = bot;
 //git rm -rf --cached .
 //git add .
 //git reset --hard HEAD^

@@ -17,8 +17,8 @@ if(askBot == "compliment" || askBot == "insult"){
     console.log(askBot);
 }
 else if(askBot.indexOf("insult") > 0){
-    console.log(askBot.slice(askBot.indexOf("insult"),askBot.length));
+    console.log("insult");
 }
 else if(askBot.indexOf("compliment") > 0){
-    console.log(askBot.slice(askBot.indexOf("compliment"),askBot.length));
+    console.log("compliment");
 }
