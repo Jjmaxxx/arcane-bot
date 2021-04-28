@@ -22,8 +22,8 @@ module.exports = {
                 msg.react("✅");
                 msg.channel.send(`***${args}*** has been created`);
                 //setting it in db and locally
-                mapDatabase.dbMap.set(msg.guild.id, {ServerID: msg.guild.id, collections: [`${args}`], currentCollection: `${args}`, target: "437808476106784770"});
-                db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collections: [`${args}`], currentCollection: `${args}`, target:"437808476106784770"});
+                mapDatabase.dbMap.set(msg.guild.id, {ServerID: msg.guild.id, collections: [`${args}`], currentCollection: `${args}`, target: ""});
+                db.collection("LinkServerToCollection").insertOne({ServerID: msg.guild.id, collections: [`${args}`], currentCollection: `${args}`, target:""});
                 mapDatabase.dbInsults.set(msg.guild.id, {ServerID: msg.guild.id, collectionName: `${args}`, insults: []});
                 db.collection("insults").insertOne({ServerID: msg.guild.id, collectionName: `${args}`, insults: []});
                 console.log("document created");

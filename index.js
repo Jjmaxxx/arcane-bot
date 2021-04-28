@@ -22,12 +22,7 @@ for(const file of commandFiles){
 const listOfCommands = bot.commands;
 let commandList = [];
 listOfCommands.map((currElement, index)=>{
-    if(index == "target"){
-
-    }
-    else{
-        commandList.push({name:prefix + index, value: currElement.description});    
-    }
+    commandList.push({name:prefix + index, value: currElement.description});    
 })
 
 
@@ -52,10 +47,10 @@ bot.on('guildCreate', guild => {
           color: 0x2471a3, 
           description: "The prefix for all my commands is \'$', like \'$help\'.",
           fields:[
-              commands
+            commandList
           ],
           footer: {
-              text: 'Yes this took time. Yes i spent time making this. Yes I have brain damage.'
+              text: 'Made by: github.com/Jjmaxxx'
           }
       }
     });
@@ -67,22 +62,22 @@ bot.on('message',(msg)=>{
     // } 
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
-    if(bot.commands.has(command)){
-        if(msg.channel.type !== "dm"){
-            if(!mapDatabase.inCollection(msg)){
-                mapDatabase.addServerToCollection(db, msg);
-                mapDatabase.addInsultToCollection(db, msg);
-            }else if(mapDatabase.inCollection(msg)){
-                mapDatabase.refreshTimeout(msg);
-            }
+    if(bot.commands.has(command) && msg.channel.type == "dm"){
+        if(msg.content.startsWith(prefix)){
+            bot.commands.get(command).execute(msg, args);
         }
+    }
+    else if(bot.commands.has(command) && !(mapDatabase.dbMap.get(msg.guild.id) == null || mapDatabase.dbInsults.get(msg.guild.id) == null)){
         if(msg.content.startsWith(prefix)){
             bot.commands.get(command).execute(msg, args);
         }
     }
     if(msg.channel.type !== "dm"){
-        if(mapDatabase.dbMap.get(msg.guild.id) == null || mapDatabase.dbInsults.get(msg.guild.id) == null){
-
+        if(!mapDatabase.inCollection(msg)){
+            mapDatabase.addServerToCollection(db, msg);
+            mapDatabase.addInsultToCollection(db, msg);
+        }else if(mapDatabase.inCollection(msg)){
+            mapDatabase.refreshTimeout(msg);
         }
     }
     dbMap = mapDatabase.dbMap;
@@ -92,6 +87,8 @@ bot.on('message',(msg)=>{
     }
     let document = dbMap.get(msg.guild.id);
     let insultDoc = dbInsults.get(msg.guild.id);
+    //console.log(dbMap);
+    //console.log(msg.member.user.tag)
     if(document != null && document.target == `${msg.member.user.tag}`){
         if(document.currentCollection == "default"){
             msg.reply(dbInsults.get("global").insults[Math.floor(Math.random()*insultDoc.insults.length)]);

@@ -2,7 +2,7 @@ let dbMap = new Map();
 let dbInsults = new Map();
 let defaultList = [];
 //15 mins
-let idleTimeout = 900000;
+let idleTimeout = 300000;
 const utils = require("./utils.js");
 
 module.exports = {

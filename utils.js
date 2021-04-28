@@ -15,5 +15,16 @@ module.exports = {
         );
         msg.channel.send(collectionsList);
         return collectionsList;
+    },
+    isUserValid: (userTag)=>{
+        if(userTag.length != 5){
+            return false;
+        }
+        for(let i=1; i<userTag.length; i++){
+            if(isNaN(userTag.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 }
